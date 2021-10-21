@@ -1,0 +1,31 @@
+from_date_str: '1997-01-01'
+TZ_param: 'TZ=US/Eastern'
+TZ: 'US/Eastern'
+
+price_csv_dir_path: './prices'
+
+FX_tickers: {'base': 'USDKRW BOKR Curncy',
+              'pairs': ['SGD', 'CNY', 'CNH', 'JPY', 'HKD', 'VND', 'EUR', 'INR', 'IDR', 'PHP']}
+
+
+database_info: {
+                 total_db_read: {'host': 'dev-richgo-finance-instance-1.ca4ksn7jhida.ap-northeast-2.rds.amazonaws.com',
+                                 'port': 2206,
+                                 'user': 'rf_read',
+                                 'pwd': 'eZ:?Jk43@%z6Q(&6'
+                 },
+
+                 etf_db: {
+                      'host': 'dev-richgo-finance-instance-1.ca4ksn7jhida.ap-northeast-2.rds.amazonaws.com',
+                      'port': 2206,
+                      'user': 'rf_reference_underlying',
+                      'pwd': "'F8GyvR,UM\",F%2D"
+                 },
+
+                 my_etf_db: {
+                      'host': 'dev-richgo-finance-instance-1.ca4ksn7jhida.ap-northeast-2.rds.amazonaws.com',
+                      'port': 2206,
+                      'user': 'etf_management',
+                      'pwd': "8/kC&.5'')8''Nf%5@"
+                 }
+}
