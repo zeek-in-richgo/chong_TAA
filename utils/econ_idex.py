@@ -5,7 +5,8 @@ def get_eco_indicator_ticker2info():
     eco_indicator_tickers = ['OEKRKLAC Index', 'NAPMPMI Index',  'NAPMNEWO_NAPMINV', \
                              'RWKELCP Index', 'RWKELCS Index',  \
                              'usyieldspread_10y_2y Index', 'usyieldspread_10y_2y_normalized Index',
-                             'ISRATIO Index']
+                             'ISRATIO Index',
+                             'OEOTKLAC Index', 'OEUSKLAC Index']
     for eco_indicator_ticker in eco_indicator_tickers:
         info = {}
         if eco_indicator_ticker == 'OEKRKLAC Index':
@@ -64,6 +65,20 @@ def get_eco_indicator_ticker2info():
             info['to_timestamp_freq'] = 'M'
             info['upper_bound'] = 1.35
             info['lower_bound'] = 1.35
+        elif eco_indicator_ticker == 'OEOTKLAC Index':
+            info['name'] = 'Total OECD Leading Indicators'
+            info['period_freq'] = 'm'
+            info['release_adjust_amount'] = 2
+            info['to_timestamp_freq'] = 'M'
+            info['upper_bound'] = 100
+            info['lower_bound'] = 100
+        elif eco_indicator_ticker == 'OEUSKLAC Index':
+            info['name'] = 'US OECD Leading Indicators'
+            info['period_freq'] = 'm'
+            info['release_adjust_amount'] = 2
+            info['to_timestamp_freq'] = 'M'
+            info['upper_bound'] = 100
+            info['lower_bound'] = 100
         else:
             print('Error! Invalid eco_indicator_ticker: ', eco_indicator_ticker)
             raise ValueError

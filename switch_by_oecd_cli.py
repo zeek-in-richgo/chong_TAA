@@ -133,6 +133,10 @@ def get_eco_indicator_name(oecd_cli_csv):
     elif basename(oecd_cli_csv) == '미국.csv':
         return 'OECD CLI(US)'
 
+def get_stats(my_portfolio):
+    dd = 1 - my_portfolio / np.maximum.accumulate(my_portfolio)
+    pass
+
 if __name__ == '__main__':
     with open('config.yaml', "r", encoding='UTF8') as f:
         configuration = yaml.load(f, Loader=yaml.FullLoader)
@@ -240,11 +244,9 @@ if __name__ == '__main__':
             kospi_chong_1 = adjust_to_100(kospi_chong_1, kospi_chong_1.index[0])
             kospi_chong_2 = adjust_to_100(kospi_chong_2, kospi_chong_2.index[0])
 
-            #chong_taa_1 = adjust_to_100(chong_taa_1, chong_taa_1.index[0], subset=['asset_in_boom', 'asset_in_recession'])
-            #chong_taa_2 = adjust_to_100(chong_taa_2, chong_taa_2.index[0], subset=['asset_in_boom', 'asset_in_recession'])
-            #kospi_chong_1 = adjust_to_100(kospi_chong_1, initial_trade_date_1)
-            #kospi_chong_2 = adjust_to_100(kospi_chong_2, initial_trade_date_2)
+            stats = get_stats(kospi_chong_1['my_portfolio'])
 
+            #### Draw
             draw_simple_general(fig, kospi_chong_1, recession_periods_1,
                         boom_name, recession_name,
                         eco_indicator_name,  upper_bound, lower_bound, asset_key,

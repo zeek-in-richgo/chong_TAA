@@ -122,8 +122,6 @@ def str2timestamp(str_obj):  # '오전 02:00:00
 def str2pd_timestamp_min_added(str_obj):
     return get_pd_timestamp_min() + str2timedelta(str_obj)
 
-
-
 def preprocess_undl_constants_for_db(undl_idx_constant_infos):
     # Column('ticker', String(32), primary_key=True),
     # Column('name', String(128)),

@@ -103,7 +103,7 @@ def draw_simple_general(fig, kospi_chong_1, recession_periods_1,
     #plt.xticks(fontsize=fontsize)
     #plt.yticks(fontsize=fontsize)
 
-    ax1.set_ylabel('1997 = 100', fontdict=fontdict)
+    ax1.set_ylabel('{} = 100'.format(kospi_chong_1.index[0]), fontdict=fontdict)
     if strategy_id == '1':
         #ax1.set_title(eco_indicator_name + '> {}이면 {}, < {}이면 {}'.format(upper_bound, boom_name,
         #                                                                    lower_bound, recession_name),
