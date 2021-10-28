@@ -12,6 +12,7 @@ from utils.data_manipulation import *
 from utils.draw import *
 from utils.econ_idex import *
 from utils.strategy import *
+from utils.stat_backtesting import *
 
 
 def get_trade(df, my_money):
@@ -260,23 +261,55 @@ if __name__ == '__main__':
                 #assert initial_trade_date_1 == initial_trade_date_2
                 initial_trade_date = initial_trade_date_2
 
-                # compare to KOSPI
+                ## compare to KOSPI
+                #if bloomberg_available:
+                #    kospi_historicals = blp.bdh('KOSPI2 Index', 'px_last', from_date_str, to_date_str, TZ_param)
+                #    kospi_historicals.columns = kospi_historicals.columns.get_level_values(0)
+                #else:
+                #    path_kospi2 = p_join(price_csv_dir, 'KOSPI2.csv')
+                #    kospi_historicals = pd.read_csv(path_kospi2, index_col=0)
+                #    kospi_historicals.index = pd.to_datetime(kospi_historicals.index)
+                #    kospi_historicals = fill_index(kospi_historicals)
+
+                #kospi_chong_1 = pd.concat([chong_taa_1['my_portfolio'], kospi_historicals], axis=1).dropna()
+                #kospi_chong_2 = pd.concat([chong_taa_2['my_portfolio'], kospi_historicals], axis=1).dropna()
+
+                #chong_taa_1 = adjust_to_100(chong_taa_1, chong_taa_1.index[0])
+                #chong_taa_2 = adjust_to_100(chong_taa_2, chong_taa_2.index[0])
+                #kospi_chong_1 = adjust_to_100(kospi_chong_1, initial_trade_date_1)
+                #kospi_chong_2 = adjust_to_100(kospi_chong_2, initial_trade_date_2)
+
+                # compare to BenchMark(ex:S&P500)
+                bm_name = 'S&P 500 Index'
+                bm_ticker = 'SPX Index'
                 if bloomberg_available:
-                    kospi_historicals = blp.bdh('KOSPI2 Index', 'px_last', from_date_str, to_date_str, TZ_param)
-                    kospi_historicals.columns = kospi_historicals.columns.get_level_values(0)
+                    benchmark_historicals = blp.bdh(bm_ticker, 'px_last', from_date_str, to_date_str, TZ_param)
+                    benchmark_historicals.columns = benchmark_historicals.columns.get_level_values(0)
                 else:
-                    path_kospi2 = p_join(price_csv_dir, 'KOSPI2.csv')
-                    kospi_historicals = pd.read_csv(path_kospi2, index_col=0)
-                    kospi_historicals.index = pd.to_datetime(kospi_historicals.index)
-                    kospi_historicals = fill_index(kospi_historicals)
+                    path_kospi2 = p_join(price_csv_dir, '{}.csv'.format(bm_ticker.split()[0]))
+                    benchmark_historicals = pd.read_csv(path_kospi2, index_col=0)
+                    benchmark_historicals.index = pd.to_datetime(benchmark_historicals.index)
+                benchmark_historicals = get_foreigns_in_KRW(pd.DataFrame(benchmark_historicals), FXs, 'USDKRW')[
+                    'point_in_krw']
+                benchmark_historicals = pd.DataFrame({bm_ticker: benchmark_historicals})
+                benchmark_historicals = fill_index(benchmark_historicals)
 
-                kospi_chong_1 = pd.concat([chong_taa_1['my_portfolio'], kospi_historicals], axis=1).dropna()
-                kospi_chong_2 = pd.concat([chong_taa_2['my_portfolio'], kospi_historicals], axis=1).dropna()
+                kospi_chong_1 = pd.concat([chong_taa_1['my_portfolio'], benchmark_historicals], axis=1).dropna()
+                kospi_chong_2 = pd.concat([chong_taa_2['my_portfolio'], benchmark_historicals], axis=1).dropna()
+                kospi_chong_1 = adjust_to_100(kospi_chong_1, kospi_chong_1.index[0])
+                kospi_chong_2 = adjust_to_100(kospi_chong_2, kospi_chong_2.index[0])
 
-                chong_taa_1 = adjust_to_100(chong_taa_1, chong_taa_1.index[0])
-                chong_taa_2 = adjust_to_100(chong_taa_2, chong_taa_2.index[0])
-                kospi_chong_1 = adjust_to_100(kospi_chong_1, initial_trade_date_1)
-                kospi_chong_2 = adjust_to_100(kospi_chong_2, initial_trade_date_2)
+                bm_stats = get_stats(benchmark_historicals['SPX Index'].loc['2008-03-07':])
+                str1_stats = get_stats(kospi_chong_1['my_portfolio'])
+                str2_stats = get_stats(kospi_chong_2['my_portfolio'])
+                print('--' * 10, "bm_stats")
+                print(bm_stats)
+                print('')
+                print('--' * 10, "strategy 1 stats")
+                print(str1_stats)
+                print('')
+                print('--' * 10, "strategy 2 stats")
+                print(str2_stats)
 
                 draw_simple(fig, kospi_chong_1, recession_periods_1,
                             boom_name, recession_name,

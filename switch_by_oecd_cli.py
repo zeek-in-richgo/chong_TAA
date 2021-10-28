@@ -133,9 +133,9 @@ def get_eco_indicator_name(oecd_cli_csv):
     elif basename(oecd_cli_csv) == '미국.csv':
         return 'OECD CLI(US)'
 
-def get_stats(my_portfolio):
-    dd = 1 - my_portfolio / np.maximum.accumulate(my_portfolio)
-    pass
+#def get_stats(my_portfolio):
+#    dd = 1 - my_portfolio / np.maximum.accumulate(my_portfolio)
+#    pass
 
 if __name__ == '__main__':
     with open('config.yaml', "r", encoding='UTF8') as f:
@@ -225,8 +225,8 @@ if __name__ == '__main__':
             chong_taa_2, initial_trade_date_2, recession_periods_2 = get_chong_switching(historicals, trade_signals_2, my_money)
             initial_trade_date = initial_trade_date_2
 
-            # compare to S&P500
-            bm_name = 'S&P500 Index'
+            # compare to S&P 500
+            bm_name = 'S&P 500 Index'
             bm_ticker = 'SPX Index'
             if bloomberg_available:
                 benchmark_historicals = blp.bdh(bm_ticker, 'px_last', from_date_str, to_date_str, TZ_param)
@@ -244,7 +244,17 @@ if __name__ == '__main__':
             kospi_chong_1 = adjust_to_100(kospi_chong_1, kospi_chong_1.index[0])
             kospi_chong_2 = adjust_to_100(kospi_chong_2, kospi_chong_2.index[0])
 
-            stats = get_stats(kospi_chong_1['my_portfolio'])
+            bm_stats = get_stats(benchmark_historicals['SPX Index'].loc['2008-03-07':])
+            str1_stats = get_stats(kospi_chong_1['my_portfolio'])
+            str2_stats = get_stats(kospi_chong_2['my_portfolio'])
+            print('--' * 10, "bm_stats")
+            print(bm_stats)
+            print('')
+            print('--' * 10, "strategy 1 stats")
+            print(str1_stats)
+            print('')
+            print('--' * 10, "strategy 2 stats")
+            print(str2_stats)
 
             #### Draw
             draw_simple_general(fig, kospi_chong_1, recession_periods_1,
