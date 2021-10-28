@@ -238,6 +238,7 @@ if __name__ == '__main__':
                     path_eco_indicator = p_join(price_csv_dir, eco_indicator_ticker.split()[0] + '.csv')
                     df = pd.read_csv(path_eco_indicator, index_col=0, header=[0,1])  # [usd_ticker_x]
                     df.index = pd.to_datetime(df.index)
+                    df = df.loc[df.index >= from_date_str]
                 #trade_signals_1, _ = strategy_1(df, eco_indicator_ticker, threshold)
                 trade_signals_1, positions_1 = strategy_1(df, eco_indicator_ticker, upper_bound, lower_bound)
                 trade_signals_2, positions_2 = strategy_2(df, eco_indicator_ticker)
@@ -311,27 +312,43 @@ if __name__ == '__main__':
                 print('--' * 10, "strategy 2 stats")
                 print(str2_stats)
 
-                draw_simple(fig, kospi_chong_1, recession_periods_1,
-                            boom_name, recession_name,
-                            df, eco_indicator_name,  upper_bound, lower_bound,asset_key,  strategy_id='1')
+                #draw_simple(fig, kospi_chong_1, recession_periods_1,
+                #            boom_name, recession_name,
+                #            df, eco_indicator_name,  upper_bound, lower_bound,asset_key,  strategy_id='1')
+                #plt.clf()
+                #csv_path = './csvs/{}/taa_1_{}_strategy{}.csv'.format(eco_indicator_name, asset_key, '1')
+                #os.makedirs(dirname(csv_path), exist_ok=True)
+                #chong_taa_1.to_csv(csv_path, encoding="utf-8-sig")
+
+                #draw_simple(fig, kospi_chong_2, recession_periods_2,
+                #            boom_name, recession_name,
+                #            df, eco_indicator_name,  upper_bound, lower_bound, asset_key, strategy_id='2')
+                #plt.clf()
+                #csv_path = './csvs/{}/taa_1_{}_strategy{}.csv'.format(eco_indicator_name, asset_key, '2')
+                #os.makedirs(dirname(csv_path), exist_ok=True)
+                #chong_taa_2.to_csv(csv_path, encoding="utf-8-sig")
+
+                #draw_full(fig, chong_taa_1, chong_taa_2,
+                #        recession_periods_1, recession_periods_2,
+                #        boom_name, recession_name,
+                #        df, eco_indicator_name, upper_bound, lower_bound, asset_key)
+                #### Draw
+                draw_simple_general(fig, kospi_chong_1, recession_periods_1,
+                                    boom_name, recession_name,
+                                    eco_indicator_name, upper_bound, lower_bound, asset_key,
+                                    bm_name=bm_name, bm_ticker=bm_ticker, strategy_id='1')
                 plt.clf()
-                csv_path = './csvs/{}/taa_1_{}_strategy{}.csv'.format(eco_indicator_name, asset_key, '1')
+                csv_path = './csvs_oecd_cli/{}/taa_1_{}_strategy{}.csv'.format(eco_indicator_name, asset_key, '1')
                 os.makedirs(dirname(csv_path), exist_ok=True)
                 chong_taa_1.to_csv(csv_path, encoding="utf-8-sig")
 
-                draw_simple(fig, kospi_chong_2, recession_periods_2,
-                            boom_name, recession_name,
-                            df, eco_indicator_name,  upper_bound, lower_bound, asset_key, strategy_id='2')
+                draw_simple_general(fig, kospi_chong_2, recession_periods_2,
+                                    boom_name, recession_name,
+                                    eco_indicator_name, upper_bound, lower_bound, asset_key,
+                                    bm_name=bm_name, bm_ticker=bm_ticker, strategy_id='2')
                 plt.clf()
-                csv_path = './csvs/{}/taa_1_{}_strategy{}.csv'.format(eco_indicator_name, asset_key, '2')
+                csv_path = './csvs_oecd_cli/{}/taa_1_{}_strategy{}.csv'.format(eco_indicator_name, asset_key, '2')
                 os.makedirs(dirname(csv_path), exist_ok=True)
                 chong_taa_2.to_csv(csv_path, encoding="utf-8-sig")
-
-                draw_full(fig, chong_taa_1, chong_taa_2,
-                        recession_periods_1, recession_periods_2,
-                        boom_name, recession_name,
-                        df, eco_indicator_name, upper_bound, lower_bound, asset_key)
-                if i == 2:
-                    print()
                 plt.close()
     print()

@@ -14,6 +14,7 @@ from utils.data_manipulation import *
 from utils.draw import *
 from utils.econ_idex import *
 from utils.strategy import *
+from utils.stat_backtesting import *
 
 
 def get_trade(df, my_money):

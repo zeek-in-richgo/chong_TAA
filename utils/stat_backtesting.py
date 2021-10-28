@@ -97,6 +97,5 @@ def get_stats(my_portfolio):
     max_dd = -np.nan_to_num(dd.max())
     s.loc['Calmar Ratio'] = np.clip(annualized_return / (-max_dd or np.nan), 0, np.inf)
     s.loc['Max. Drawdown [%]'] = max_dd * 100
-
     print()
-
+    return s
